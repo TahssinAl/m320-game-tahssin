@@ -42,7 +42,31 @@ public class GameScreen extends ScreenAdapter {
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
 
         player = new Player(new Sprite(playerTexture), collisionLayer);
-        player.setPosition(64, 64);
+        player.setSize(1, 1); // Spielergröße in Tile-Einheiten
+
+        Vector2 spawnPoint = findSpawnPoint();
+        if (spawnPoint != null) {
+            player.setPosition(spawnPoint.x, spawnPoint.y);
+        } else {
+            player.setPosition(4, 7); // Fallback-Position
+        }
+        logAllTileProperties();
+    }
+
+    private Vector2 findSpawnPoint() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        for (int x = 0; x < layer.getWidth(); x++) {
+            for (int y = 0; y < layer.getHeight(); y++) {
+                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                if (cell != null && cell.getTile() != null) {
+                    MapProperties properties = cell.getTile().getProperties();
+                    if (properties.containsKey("spawnpoint")) {
+                        return new Vector2(x, y);
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     @Override
