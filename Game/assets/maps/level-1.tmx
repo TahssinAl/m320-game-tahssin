@@ -4,12 +4,12 @@
   <image source="main-tileset.png" width="1280" height="864"/>
   <tile id="480">
    <properties>
-    <property name="endpoint" value=""/>
+    <property name="endpoint" value="blocked"/>
    </properties>
   </tile>
   <tile id="868">
    <properties>
-    <property name="blocked" value=""/>
+    <property name="" value=""/>
    </properties>
   </tile>
   <tile id="880">
@@ -19,12 +19,12 @@
   </tile>
   <tile id="881">
    <properties>
-    <property name="blocked" value=""/>
+    <property name="blocked" value="true"/>
    </properties>
   </tile>
   <tile id="882">
    <properties>
-    <property name="blocked" value=""/>
+    <property name="blocked" value="true"/>
    </properties>
   </tile>
   <tile id="897">

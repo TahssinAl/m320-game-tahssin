@@ -7,11 +7,16 @@
     <property name="endpoint" value=""/>
    </properties>
   </tile>
-  <tile id="868">
+  <tile id="869">
    <properties>
-    <property name="blocked" value="true"/>
+    <property name="blocked" value=""/>
    </properties>
   </tile>
+    <tile id="868">
+     <properties>
+      <property name="blocked" value=""/>
+     </properties>
+    </tile>
   <tile id="952">
    <properties>
     <property name="spawnpoint" value=""/>
