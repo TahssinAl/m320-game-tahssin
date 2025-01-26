@@ -18,15 +18,25 @@ public class GameScreen extends ScreenAdapter {
     private OrthogonalTiledMapRenderer mapRenderer;
     private Player player;
 
+    private float mapWidth;
+    private float mapHeight;
+
     @Override
     public void show() {
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-
-        batch = new SpriteBatch();
-
         map = new TmxMapLoader().load("maps/level-1.tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map);
+
+        /**
+         * Calculation of the map width and height
+         */
+        mapWidth = map.getProperties().get("width", Integer.class) * map.getProperties().get("tilewidth", Integer.class);
+        mapHeight = map.getProperties().get("height", Integer.class) * map.getProperties().get("tileheight", Integer.class);
+
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
+        batch = new SpriteBatch();
+
 
         Texture playerTexture = new Texture("images/player.png");
         TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
@@ -36,9 +46,18 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
+        /**
+         * Camera follows the player and is limited
+         */
+        camera.position.set(
+            Math.max(camera.viewportWidth / 2, Math.min(player.getX() + player.getWidth() / 2, mapWidth - camera.viewportWidth / 2)),
+            Math.max(camera.viewportHeight / 2, Math.min(player.getY() + player.getHeight() / 2, mapHeight - camera.viewportHeight / 2)),
+            0
+        );
         camera.update();
-        mapRenderer.setView(camera);
 
+
+        mapRenderer.setView(camera);
         mapRenderer.render();
 
         /**
