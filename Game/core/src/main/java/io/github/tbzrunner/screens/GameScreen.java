@@ -31,7 +31,7 @@ public class GameScreen extends ScreenAdapter {
     private Vector2 spawnPoint;
     private Vector2 goalPoint;
 
-    private int currentLevel = 2;
+    private int currentLevel = 4;
 
     @Override
     public void show() {
@@ -167,8 +167,8 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         camera.setToOrtho(false,
-            width / 44f,
-            height / 44f);
+            width / 32f,
+            height / 32f);
     }
 
     @Override

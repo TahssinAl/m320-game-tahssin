@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Player extends Sprite {
 
     private static final float GRAVITY = -10f;
-    private static final float MOVE_SPEED = 5f;
-    private static final float JUMP_SPEED = 10f;
+    private static final float MOVE_SPEED = 8f;
+    private static final float JUMP_SPEED = 15f;
 
     private final Vector2 velocity = new Vector2();
     private final TiledMapTileLayer collisionLayer;

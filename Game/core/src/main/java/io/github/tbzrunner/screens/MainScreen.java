@@ -75,14 +75,12 @@ public class MainScreen implements Screen {
         batch.begin();
         font.setColor(textColor);
         font.draw(batch, "Hallo und Willkommen zum TBZRunner!",
-                Gdx.graphics.getWidth() / 2f - 220,
+                Gdx.graphics.getWidth() / 2f - 240,
                 Gdx.graphics.getHeight() / 2f);
-        font.draw(batch, "Drücke ENTER, um zu starten",
-                Gdx.graphics.getWidth() / 2f - 220,
+        font.draw(batch, "Drücke ENTER, um zu starten...",
+                Gdx.graphics.getWidth() / 2f - 240,
                 Gdx.graphics.getHeight() / 2f - 50);
-        font.draw(batch, "Presented by Tahssin Al-Khatib",
-                Gdx.graphics.getWidth() / 2f - 220,
-                Gdx.graphics.getHeight() / 2f - 150);
+
         batch.end();
 
         // Input handling
