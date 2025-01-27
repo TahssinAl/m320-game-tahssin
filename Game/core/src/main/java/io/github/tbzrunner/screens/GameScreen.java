@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import io.github.tbzrunner.enteties.NPC;
 import io.github.tbzrunner.enteties.Player;
+import io.github.tbzrunner.exceptions.InvalidMapException;
 import io.github.tbzrunner.utils.Logger;
 
 public class GameScreen extends ScreenAdapter {
@@ -40,43 +41,56 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void loadLevel(int level) {
-        if (map != null) {
-            map.dispose();
-            Logger.log("GameScreen", "Disposed of previous map.");
+        if (map != null) map.dispose();
+
+        try {
+            map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-" + level + ".tmx");
+            validateMap(map);
+
+            mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+
+            camera = new OrthographicCamera();
+            camera.setToOrtho(false, 25, 15);
+            batch = new SpriteBatch();
+
+            Texture playerTexture = new Texture("images/player.png");
+            TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
+
+            player = new Player(new Sprite(playerTexture), collisionLayer);
+            player.setSize(1, 1);
+
+            spawnPoint = findSpawnPoint();
+            if (spawnPoint != null) {
+                player.setPosition(spawnPoint.x, spawnPoint.y);
+            }
+
+            Texture npcTexture = new Texture("images/npc.png");
+            npc = new NPC(new Sprite(npcTexture), 22, 36);
+            npc.setSize(1, 1);
+            npc.setPosition(22, 36);
+
+            goalPoint = findGoalPoint();
+            if (goalPoint != null) {
+                Logger.log("GameScreen", "Goal point found at " + goalPoint);
+            }
+        } catch (InvalidMapException e) {
+            Logger.error("GameScreen", "Invalid map: " + e.getMessage());
+            Gdx.app.exit();
+        }
+    }
+
+    private void validateMap(TiledMap map) throws InvalidMapException {
+        if (map == null) {
+            throw new InvalidMapException("The map is null and cannot be loaded.");
         }
 
-        map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-" + level + ".tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-
-        mapWidth = map.getProperties().get("width", Integer.class);
-        mapHeight = map.getProperties().get("height", Integer.class);
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 25, 15);
-        batch = new SpriteBatch();
-
-        Texture playerTexture = new Texture("images/player.png");
-        TiledMapTileLayer collisionLayer = (TiledMapTileLayer) map.getLayers().get(0);
-
-        player = new Player(new Sprite(playerTexture), collisionLayer);
-        player.setSize(1, 1);
-
-        spawnPoint = findSpawnPoint();
-        if (spawnPoint != null) {
-            player.setPosition(spawnPoint.x, spawnPoint.y);
-            Logger.log("GameScreen", "Player spawn point set to " + spawnPoint);
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        if (layer == null) {
+            throw new InvalidMapException("The map does not contain a valid collision layer.");
         }
 
-        Texture npcTexture = new Texture("images/npc.png");
-        npc = new NPC(new Sprite(npcTexture), 22, 36);
-        npc.setSize(1, 1);
-        npc.setPosition(22, 36);
-
-        goalPoint = findGoalPoint();
-        if (goalPoint != null) {
-            Logger.log("GameScreen", "Goal point found at " + goalPoint);
-        } else {
-            Logger.error("GameScreen", "Goal point not found in the map.");
+        if (!map.getProperties().containsKey("width") || !map.getProperties().containsKey("height")) {
+            throw new InvalidMapException("The map is missing required properties: width or height.");
         }
     }
 

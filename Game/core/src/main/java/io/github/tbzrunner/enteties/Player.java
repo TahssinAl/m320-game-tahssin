@@ -3,6 +3,8 @@ package io.github.tbzrunner.enteties;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
+import io.github.tbzrunner.exceptions.InvalidMapException;
 
 public class Player extends Sprite {
 
@@ -14,8 +16,13 @@ public class Player extends Sprite {
     private final TiledMapTileLayer collisionLayer;
     private boolean isGrounded;
 
-    public Player(Sprite sprite, TiledMapTileLayer collisionLayer) {
+    public Player(Sprite sprite, TiledMapTileLayer collisionLayer) throws InvalidMapException {
         super(sprite);
+
+        if (collisionLayer == null) {
+            throw new InvalidMapException("Collision layer cannot be null for the player.");
+        }
+
         this.collisionLayer = collisionLayer;
     }
 
@@ -38,26 +45,22 @@ public class Player extends Sprite {
         }
     }
 
-    public void update(float delta) {
-        // Apply gravity
+    public void update(float delta)  {
         velocity.y += GRAVITY * delta;
 
         float newX = getX() + velocity.x * delta;
         float newY = getY() + velocity.y * delta;
 
-        // Check horizontal collision
         if (!isColliding(newX, getY())) {
             setX(newX);
         } else {
             velocity.x = 0;
         }
 
-        // Check vertical collision
         if (!isColliding(getX(), newY)) {
             setY(newY);
             isGrounded = false;
         } else {
-            // if landing set to isGrounded
             if (velocity.y < 0) {
                 isGrounded = true;
             }
@@ -65,17 +68,11 @@ public class Player extends Sprite {
         }
     }
 
-    /**
-     * Check collision for a single point (x,y) in tile units.
-     */
     private boolean isCollisionAt(float x, float y) {
         int tileX = (int) Math.floor(x);
         int tileY = (int) Math.floor(y);
 
-        // Out-of-bounds? Treat as no collision or handle differently
-        if (tileX < 0 || tileY < 0
-                || tileX >= collisionLayer.getWidth()
-                || tileY >= collisionLayer.getHeight()) {
+        if (tileX < 0 || tileY < 0 || tileX >= collisionLayer.getWidth() || tileY >= collisionLayer.getHeight()) {
             return false;
         }
 
@@ -84,22 +81,20 @@ public class Player extends Sprite {
             return false;
         }
 
-        // Tile is "blocked" if it has the 'blocked' property
         return cell.getTile().getProperties().containsKey("blocked");
     }
 
-    /**
-     * Check if the 1×1 player bounding box collides at (x,y).
-     */
     private boolean isColliding(float x, float y) {
         float w = getWidth();
         float h = getHeight();
 
-        // Check corners of bounding box:
-        // lower-left, lower-right, top-left, top-right
         return isCollisionAt(x, y)
-                || isCollisionAt(x + w, y)
-                || isCollisionAt(x, y + h)
-                || isCollisionAt(x + w, y + h);
+            || isCollisionAt(x + w, y)
+            || isCollisionAt(x, y + h)
+            || isCollisionAt(x + w, y + h);
+    }
+
+    public Rectangle getBoundingRectangle() {
+        return new Rectangle(getX(), getY(), getWidth(), getHeight());
     }
 }
