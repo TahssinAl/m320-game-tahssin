@@ -12,7 +12,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
 import io.github.tbzrunner.enteties.NPC;
 import io.github.tbzrunner.enteties.Player;
 
@@ -25,13 +24,10 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private NPC npc;
 
-    private float mapWidth;
-    private float mapHeight;
-
     private Vector2 spawnPoint;
     private Vector2 goalPoint;
 
-    private int currentLevel = 4;
+    private int currentLevel = 1 + 1;
 
     @Override
     public void show() {
@@ -43,9 +39,6 @@ public class GameScreen extends ScreenAdapter {
 
         map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-" + level + ".tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
-
-        mapWidth = map.getProperties().get("width", Integer.class);
-        mapHeight = map.getProperties().get("height", Integer.class);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 25, 15);
@@ -60,14 +53,12 @@ public class GameScreen extends ScreenAdapter {
         spawnPoint = findSpawnPoint();
         if (spawnPoint != null) {
             player.setPosition(spawnPoint.x, spawnPoint.y);
-        } else {
-            player.setPosition(4, 7);
         }
 
         Texture npcTexture = new Texture("images/npc.png");
-        npc = new NPC(new Sprite(npcTexture), 23, 27);
+        npc = new NPC(new Sprite(npcTexture), 10, 20);
         npc.setSize(1, 1);
-        npc.setPosition(22, 36);
+        npc.setPosition(12, 10);
 
         goalPoint = findGoalPoint();
     }
@@ -106,33 +97,14 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         handleInput();
 
-        // Update player and NPC
         player.update(delta);
         npc.update(delta);
 
-        // Check collision between player and NPC
-        if (checkCollision(player.getBoundingRectangle(), npc.getBoundingRectangle())) {
-            player.setPosition(spawnPoint.x, spawnPoint.y);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(this));
         }
 
-        /**
-         * Check if player reaches the goal
-         */
-        if (goalPoint != null && player.getBoundingRectangle().overlaps(new Rectangle(goalPoint.x, goalPoint.y, 1, 1))) {
-            currentLevel++;
-            if (Gdx.files.internal("maps/level-" + currentLevel + ".tmx").exists()) {
-                loadLevel(currentLevel);
-            } else {
-                ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new MainScreen());
-            }
-        }
-
-        // Update camera to follow player
-        camera.position.set(
-            player.getX() + player.getWidth() / 2,
-            player.getY() + player.getHeight() / 2,
-            0
-        );
+        camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
         camera.update();
 
         Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
@@ -160,15 +132,9 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private boolean checkCollision(Rectangle rect1, Rectangle rect2) {
-        return rect1.overlaps(rect2);
-    }
-
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false,
-            width / 32f,
-            height / 32f);
+        camera.setToOrtho(false, width / 32f, height / 32f);
     }
 
     @Override
