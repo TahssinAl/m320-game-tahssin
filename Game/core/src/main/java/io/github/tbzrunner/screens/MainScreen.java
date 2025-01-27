@@ -10,9 +10,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class MainScreen implements Screen {
 
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private BitmapFont font;
+    public OrthographicCamera camera;
+    public SpriteBatch batch;
+    public BitmapFont font;
 
     private float alpha; // For text fading
     private boolean fadingIn; // Direction of fade animation

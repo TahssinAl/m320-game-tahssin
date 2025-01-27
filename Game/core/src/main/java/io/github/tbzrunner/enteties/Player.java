@@ -12,9 +12,9 @@ public class Player extends Sprite {
     private static final float MOVE_SPEED = 8f;
     private static final float JUMP_SPEED = 15f;
 
-    private final Vector2 velocity = new Vector2();
+    public final Vector2 velocity = new Vector2();
     private final TiledMapTileLayer collisionLayer;
-    private boolean isGrounded;
+    public boolean isGrounded;
 
     public Player(Sprite sprite, TiledMapTileLayer collisionLayer) throws InvalidMapException {
         super(sprite);

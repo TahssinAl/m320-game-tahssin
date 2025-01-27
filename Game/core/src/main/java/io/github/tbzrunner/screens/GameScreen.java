@@ -19,20 +19,20 @@ import io.github.tbzrunner.utils.Logger;
 
 public class GameScreen extends ScreenAdapter {
 
-    private OrthographicCamera camera;
+    public OrthographicCamera camera;
     private SpriteBatch batch;
-    private TiledMap map;
-    private OrthogonalTiledMapRenderer mapRenderer;
-    private Player player;
-    private NPC npc;
+    public TiledMap map;
+    public OrthogonalTiledMapRenderer mapRenderer;
+    public Player player;
+    public NPC npc;
 
     private float mapWidth;
     private float mapHeight;
 
     private Vector2 spawnPoint;
-    private Vector2 goalPoint;
+    public Vector2 goalPoint;
 
-    private int currentLevel = 2;
+    public int currentLevel = 2;
 
     @Override
     public void show() {
@@ -40,7 +40,7 @@ public class GameScreen extends ScreenAdapter {
         loadLevel(currentLevel);
     }
 
-    private void loadLevel(int level) {
+    public void loadLevel(int level) {
         if (map != null) map.dispose();
 
         try {
@@ -94,7 +94,7 @@ public class GameScreen extends ScreenAdapter {
         }
     }
 
-    private Vector2 findSpawnPoint() {
+    public Vector2 findSpawnPoint() {
         TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
         for (int x = 0; x < layer.getWidth(); x++) {
             for (int y = 0; y < layer.getHeight(); y++) {
@@ -158,7 +158,7 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
     }
 
-    private void handleInput() {
+    public void handleInput() {
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
             player.moveLeft();
         } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
