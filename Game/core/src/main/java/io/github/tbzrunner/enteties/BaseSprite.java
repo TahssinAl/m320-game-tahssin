@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class BaseSprite extends Sprite {
+
     public BaseSprite(Sprite sprite) {
         super(sprite);
     }

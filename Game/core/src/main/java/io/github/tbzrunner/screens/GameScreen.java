@@ -10,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Rectangle;
-import io.github.tbzrunner.enteties.Player;
+import com.badlogic.gdx.math.Vector2;
+
 import io.github.tbzrunner.enteties.NPC;
+import io.github.tbzrunner.enteties.Player;
 
 public class GameScreen extends ScreenAdapter {
+
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private TiledMap map;
@@ -58,7 +60,6 @@ public class GameScreen extends ScreenAdapter {
         npc.setSize(1, 1);
         npc.setPosition(22, 36);
 
-
         /**
          * Add later on new character
          */
@@ -95,9 +96,9 @@ public class GameScreen extends ScreenAdapter {
 
         // Update camera to follow player
         camera.position.set(
-            player.getX() + player.getWidth() / 2,
-            player.getY() + player.getHeight() / 2,
-            0
+                player.getX() + player.getWidth() / 2,
+                player.getY() + player.getHeight() / 2,
+                0
         );
         camera.update();
 

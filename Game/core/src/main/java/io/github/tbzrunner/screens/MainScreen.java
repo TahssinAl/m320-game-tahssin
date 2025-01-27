@@ -75,14 +75,14 @@ public class MainScreen implements Screen {
         batch.begin();
         font.setColor(textColor);
         font.draw(batch, "Hallo und Willkommen zum TBZRunner!",
-            Gdx.graphics.getWidth() / 2f - 220,
-            Gdx.graphics.getHeight() / 2f);
+                Gdx.graphics.getWidth() / 2f - 220,
+                Gdx.graphics.getHeight() / 2f);
         font.draw(batch, "Drücke ENTER, um zu starten",
-            Gdx.graphics.getWidth() / 2f - 220,
-            Gdx.graphics.getHeight() / 2f - 50);
+                Gdx.graphics.getWidth() / 2f - 220,
+                Gdx.graphics.getHeight() / 2f - 50);
         font.draw(batch, "Presented by Tahssin Al-Khatib",
-            Gdx.graphics.getWidth() / 2f - 220,
-            Gdx.graphics.getHeight() / 2f - 150);
+                Gdx.graphics.getWidth() / 2f - 220,
+                Gdx.graphics.getHeight() / 2f - 150);
         batch.end();
 
         // Input handling
@@ -97,13 +97,16 @@ public class MainScreen implements Screen {
     }
 
     @Override
-    public void pause() { }
+    public void pause() {
+    }
 
     @Override
-    public void resume() { }
+    public void resume() {
+    }
 
     @Override
-    public void hide() { }
+    public void hide() {
+    }
 
     @Override
     public void dispose() {

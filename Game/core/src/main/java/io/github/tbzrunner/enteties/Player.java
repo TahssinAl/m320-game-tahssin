@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Sprite {
+
     private static final float GRAVITY = -10f;
     private static final float MOVE_SPEED = 5f;
     private static final float JUMP_SPEED = 12f;
@@ -73,9 +74,8 @@ public class Player extends Sprite {
 
         // Out-of-bounds? Treat as no collision or handle differently
         if (tileX < 0 || tileY < 0
-            || tileX >= collisionLayer.getWidth()
-            || tileY >= collisionLayer.getHeight())
-        {
+                || tileX >= collisionLayer.getWidth()
+                || tileY >= collisionLayer.getHeight()) {
             return false;
         }
 
@@ -97,9 +97,9 @@ public class Player extends Sprite {
 
         // Check corners of bounding box:
         // lower-left, lower-right, top-left, top-right
-        return isCollisionAt(x, y) ||
-            isCollisionAt(x + w, y) ||
-            isCollisionAt(x, y + h) ||
-            isCollisionAt(x + w, y + h);
+        return isCollisionAt(x, y)
+                || isCollisionAt(x + w, y)
+                || isCollisionAt(x, y + h)
+                || isCollisionAt(x + w, y + h);
     }
 }
