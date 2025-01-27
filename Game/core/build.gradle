@@ -8,4 +8,10 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  // Test dependencies
+  testImplementation "org.junit.jupiter:junit-jupiter:5.8.1" // JUnit 5
+  testImplementation "org.mockito:mockito-core:4.11.0" // Mockito für Tests
+  testImplementation "net.bytebuddy:byte-buddy:1.14.5" // Byte Buddy für Mockito
+  testImplementation "net.bytebuddy:byte-buddy-agent:1.14.5" // Byte Buddy Agent für Mockito
 }
