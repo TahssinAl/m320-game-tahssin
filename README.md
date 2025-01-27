@@ -1,52 +1,67 @@
 # Project Plan and Architecture
 
 ## Planned Architecture
-At the start of the project, I created a class diagram to show how the different parts of the game would work together. I used a tool like Draw.io for this. The diagram helped me stay organized and clear about the structure of the project.
+At the start of the project, I created a class diagram to plan how the different parts of the game would work together. I used a tool like Draw.io for this. This diagram helped me organize the structure of the project and keep everything clear as I worked on the game.
 
 ## Game Overview
-The game is a 2D platformer called **TBZRunner**, where the player controls a character to navigate through different levels. Each level has a goal point, and the player has to avoid obstacles and interact with NPCs to reach the goal. The game includes features like jumping, moving left or right, and interacting with the environment.
+The game is a 2D platformer called **TBZRunner**, created with **LibGDX**. The game uses **Tiled** maps for the levels, allowing me to design dynamic, interactive maps with spawn points, goals, and collision layers.
 
-Key elements in the game:
-- **Player**: Controlled by the user, with basic movement and jumping abilities.
-- **NPCs**: Characters that add interaction and story to the game.
-- **Levels**: Maps loaded dynamically as the player progresses.
-- **Main Menu**: A welcoming screen where the player can start the game.
-- **Logger**: Logs events and helps with debugging.
-- **Pause Screen**: Allows the player to pause the game.
+### Key Features:
+- **Player**: A character controlled by the user, with movement and jumping abilities.
+- **NPCs**: Non-playable characters that add interaction and depth to the game.
+- **Levels**: Built with Tiled maps and loaded dynamically as the player progresses.
+- **Main Menu**: A starting screen with smooth animations and options to begin the game.
+- **Logger**: A custom logging tool for tracking events and debugging.
+- **Pause Screen**: Allows the player to pause and resume the game at any time.
+
+### Tools and Libraries:
+- **LibGDX**: For building the entire game and managing graphics, input, and logic.
+- **Tiled**: Used for designing maps with layers and properties for collision, spawn points, and goals.
+- **IntelliJ IDEA**: For writing and testing the code.
+- **Draw.io**: For creating the class diagram.
+
+### Project Structure:
+The project is organized into the following main packages:
+1. `io.github.tbzrunner.screens` – Contains screens like `GameScreen`, `MainScreen`, and `PauseScreen`.
+2. `io.github.tbzrunner.enteties` – Contains entities like `Player`, `NPC`, and `Enemy`.
+3. `io.github.tbzrunner.utils` – Contains utility classes like `Logger`.
+4. `io.github.tbzrunner.exceptions` – Handles game-specific exceptions like `InvalidMapException`.
 
 ## Design Patterns Used
-I used the following design patterns to structure the project:
+I used the following design patterns to keep the project structured and maintainable:
 
 1. **Factory Pattern**:
-   - Used to load levels dynamically and validate the maps.
-   - This pattern made it easier to manage and extend the game by adding new levels.
+   - Used to load and validate Tiled maps for each level.
+   - This made it easier to add new levels by simply creating more `.tmx` files.
 
 2. **Singleton Pattern**:
-   - Used in the `Logger` class to ensure there's only one logger instance throughout the game.
-   - This helped maintain consistent logging and debugging.
+   - Used in the `Logger` class to ensure consistent logging throughout the game.
 
 3. **MVC (Model-View-Controller)**:
-   - While not strictly implemented, the game loosely follows the MVC structure.
-     - The **Model** is represented by classes like `Player`, `NPC`, and `Enemy`.
-     - The **View** is handled by classes like `GameScreen` and `MainScreen` for rendering.
-     - The **Controller** involves input handling and logic in the `GameScreen` and other screens.
+   - The project loosely follows MVC principles:
+     - **Model**: Includes classes like `Player`, `NPC`, and `Enemy` for the core data and logic.
+     - **View**: Handled by `GameScreen`, `MainScreen`, and other screens for rendering the UI.
+     - **Controller**: Managed input handling and level logic in the `GameScreen`.
 
-## What We Did and When
+## Solo Development
+This project was developed entirely by me as a solo developer. Working alone gave me full control over the code and design, but it also meant managing all aspects of the project myself, from planning to testing.
 
-### Week 1: Starting the Project
-- Set up the project and tools needed for development.
-- Wrote a simple `README.md` file to explain the project.
-- Created a class diagram to plan how the main parts (like `Player`, `GameScreen`, and `MainScreen`) would connect.
+## What I Did and When
 
-### Week 2: Building the Game
-- Built the main features of the game, like the `Player` and `GameScreen`.
-- Added other parts, like `NPC`, `Enemy`, and `Logger`, to make the game work.
-- Tested the connections between the classes to make sure everything worked as planned.
+### Week 1: Planning
+- Set up the project and tools (LibGDX, Tiled, IntelliJ IDEA).
+- Created a simple class diagram to organize the structure.
+- Started writing the basic game loop and input handling.
 
-### Week 3: Finishing Up
-- Tested everything to make sure the game worked well.
-- Fixed and improved the code based on testing.
-- Updated the class diagram and the `README.md` file to match the final version of the project.
+### Week 2: Development
+- Built core functionality, including player movement, NPCs, and map loading.
+- Integrated Tiled maps and added collision detection.
+- Worked on different screens like the `MainScreen` and `PauseScreen`.
+
+### Week 3: Testing and Finalization
+- Polished gameplay features and fixed bugs.
+- Added the ability to transition between levels dynamically.
+- Updated the class diagram and cleaned up the project structure.
 
 ## Summary
-The project was completed on time, and the design patterns helped make the game easier to develop and maintain. The final version of **TBZRunner** is fun, functional, and ready for players!
+Using **LibGDX** and **Tiled**, I built a fully functional 2D platformer in 3 weeks. The use of design patterns helped me structure the project and made development smoother. I'm proud of completing this project on my own and delivering a fun and functional game.
