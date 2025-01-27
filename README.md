@@ -16,6 +16,9 @@ The game is a 2D platformer called **TBZRunner**, created with **LibGDX**. The g
 
 ### Tools and Libraries:
 - **LibGDX**: For building the entire game and managing graphics, input, and logic.
+- Project generation
+- ![Screenshot 2025-01-13 160047](https://github.com/user-attachments/assets/858c7968-9c1f-4fad-8bd3-b14ddcdc23ec)
+
 - **Tiled**: Used for designing maps with layers and properties for collision, spawn points, and goals.
 - ![image](https://github.com/user-attachments/assets/c858c645-1536-40c8-8191-0aca915f7d2a)
 
