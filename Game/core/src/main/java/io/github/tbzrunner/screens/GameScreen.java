@@ -29,10 +29,19 @@ public class GameScreen extends ScreenAdapter {
     private float mapHeight;
 
     private Vector2 spawnPoint;
+    private Vector2 goalPoint;
+
+    private int currentLevel = 2;
 
     @Override
     public void show() {
-        map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-2.tmx");
+        loadLevel(currentLevel);
+    }
+
+    private void loadLevel(int level) {
+        if (map != null) map.dispose();
+
+        map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-" + level + ".tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
 
         mapWidth = map.getProperties().get("width", Integer.class);
@@ -60,9 +69,7 @@ public class GameScreen extends ScreenAdapter {
         npc.setSize(1, 1);
         npc.setPosition(22, 36);
 
-        /**
-         * Add later on new character
-         */
+        goalPoint = findGoalPoint();
     }
 
     private Vector2 findSpawnPoint() {
@@ -72,6 +79,21 @@ public class GameScreen extends ScreenAdapter {
                 TiledMapTileLayer.Cell cell = layer.getCell(x, y);
                 if (cell != null && cell.getTile() != null) {
                     if (cell.getTile().getProperties().containsKey("spawnpoint")) {
+                        return new Vector2(x, y);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    private Vector2 findGoalPoint() {
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(0);
+        for (int x = 0; x < layer.getWidth(); x++) {
+            for (int y = 0; y < layer.getHeight(); y++) {
+                TiledMapTileLayer.Cell cell = layer.getCell(x, y);
+                if (cell != null && cell.getTile() != null) {
+                    if (cell.getTile().getProperties().containsKey("goalPoint")) {
                         return new Vector2(x, y);
                     }
                 }
@@ -90,15 +112,26 @@ public class GameScreen extends ScreenAdapter {
 
         // Check collision between player and NPC
         if (checkCollision(player.getBoundingRectangle(), npc.getBoundingRectangle())) {
-            // Reset player to spawn point upon collision
             player.setPosition(spawnPoint.x, spawnPoint.y);
+        }
+
+        /**
+         * Check if player reaches the goal
+         */
+        if (goalPoint != null && player.getBoundingRectangle().overlaps(new Rectangle(goalPoint.x, goalPoint.y, 1, 1))) {
+            currentLevel++;
+            if (Gdx.files.internal("maps/level-" + currentLevel + ".tmx").exists()) {
+                loadLevel(currentLevel);
+            } else {
+                ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new MainScreen());
+            }
         }
 
         // Update camera to follow player
         camera.position.set(
-                player.getX() + player.getWidth() / 2,
-                player.getY() + player.getHeight() / 2,
-                0
+            player.getX() + player.getWidth() / 2,
+            player.getY() + player.getHeight() / 2,
+            0
         );
         camera.update();
 
@@ -133,7 +166,9 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-        camera.setToOrtho(false, width / 32f, height / 32f);
+        camera.setToOrtho(false,
+            width / 44f,
+            height / 44f);
     }
 
     @Override
