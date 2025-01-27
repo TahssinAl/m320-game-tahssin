@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import io.github.tbzrunner.enteties.NPC;
 import io.github.tbzrunner.enteties.Player;
+import io.github.tbzrunner.utils.Logger;
 
 public class GameScreen extends ScreenAdapter {
 
@@ -24,21 +25,31 @@ public class GameScreen extends ScreenAdapter {
     private Player player;
     private NPC npc;
 
+    private float mapWidth;
+    private float mapHeight;
+
     private Vector2 spawnPoint;
     private Vector2 goalPoint;
 
-    private int currentLevel = 1 + 1;
+    private int currentLevel = 2;
 
     @Override
     public void show() {
+        Logger.log("GameScreen", "Starting at level " + currentLevel);
         loadLevel(currentLevel);
     }
 
     private void loadLevel(int level) {
-        if (map != null) map.dispose();
+        if (map != null) {
+            map.dispose();
+            Logger.log("GameScreen", "Disposed of previous map.");
+        }
 
         map = new com.badlogic.gdx.maps.tiled.TmxMapLoader().load("maps/level-" + level + ".tmx");
         mapRenderer = new OrthogonalTiledMapRenderer(map, 1 / 32f);
+
+        mapWidth = map.getProperties().get("width", Integer.class);
+        mapHeight = map.getProperties().get("height", Integer.class);
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 25, 15);
@@ -53,14 +64,20 @@ public class GameScreen extends ScreenAdapter {
         spawnPoint = findSpawnPoint();
         if (spawnPoint != null) {
             player.setPosition(spawnPoint.x, spawnPoint.y);
+            Logger.log("GameScreen", "Player spawn point set to " + spawnPoint);
         }
 
         Texture npcTexture = new Texture("images/npc.png");
-        npc = new NPC(new Sprite(npcTexture), 10, 20);
+        npc = new NPC(new Sprite(npcTexture), 22, 36);
         npc.setSize(1, 1);
-        npc.setPosition(12, 10);
+        npc.setPosition(22, 36);
 
         goalPoint = findGoalPoint();
+        if (goalPoint != null) {
+            Logger.log("GameScreen", "Goal point found at " + goalPoint);
+        } else {
+            Logger.error("GameScreen", "Goal point not found in the map.");
+        }
     }
 
     private Vector2 findSpawnPoint() {
@@ -75,6 +92,7 @@ public class GameScreen extends ScreenAdapter {
                 }
             }
         }
+        Logger.error("GameScreen", "Spawn point not found.");
         return null;
     }
 
@@ -100,8 +118,16 @@ public class GameScreen extends ScreenAdapter {
         player.update(delta);
         npc.update(delta);
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new PauseScreen(this));
+        if (goalPoint != null && player.getBoundingRectangle().overlaps(new Rectangle(goalPoint.x, goalPoint.y, 1, 1))) {
+            Logger.log("GameScreen", "Player reached goal at " + goalPoint);
+            currentLevel++;
+            if (Gdx.files.internal("maps/level-" + currentLevel + ".tmx").exists()) {
+                Logger.log("GameScreen", "Loading next level: " + currentLevel);
+                loadLevel(currentLevel);
+            } else {
+                Logger.log("GameScreen", "No more levels. Returning to MainScreen.");
+                ((com.badlogic.gdx.Game) Gdx.app.getApplicationListener()).setScreen(new MainScreen());
+            }
         }
 
         camera.position.set(player.getX() + player.getWidth() / 2, player.getY() + player.getHeight() / 2, 0);
@@ -129,6 +155,7 @@ public class GameScreen extends ScreenAdapter {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
             player.jump();
+            Logger.log("GameScreen", "Player jumped.");
         }
     }
 
@@ -139,6 +166,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void dispose() {
+        Logger.log("GameScreen", "Disposing resources.");
         map.dispose();
         mapRenderer.dispose();
         batch.dispose();
