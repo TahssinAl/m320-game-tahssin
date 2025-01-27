@@ -68,5 +68,9 @@ This project was developed entirely by me as a solo developer. Working alone gav
 - Added the ability to transition between levels dynamically.
 - Updated the class diagram and cleaned up the project structure.
 
+### Structure
+![image](https://github.com/user-attachments/assets/49f00d74-9aad-4815-8aff-a6fb4603b823)
+
+
 ## Summary
 Using **LibGDX** and **Tiled**, I built a fully functional 2D platformer in 3 weeks. The use of design patterns helped me structure the project and made development smoother. I'm proud of completing this project on my own and delivering a fun and functional game.
